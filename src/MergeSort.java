@@ -12,30 +12,30 @@ class MergeSort {
    * O segundo subarray é arr[q+1..r]
    * Pré-condição: Assume-se que arr[p..q] e arr[q+1..r] já estão ordenados.
    *
-   * @param arr O array original que contém os subarrays a serem mesclados.
-   * @param p   O índice inicial do primeiro subarray.
-   * @param q   O índice final do primeiro subarray.
-   * @param r   O índice final do segundo subarray.
+   * @param vetor O array original que contém os subarrays a serem mesclados.
+   * @param indiceInicialL   O índice inicial do primeiro subarray.
+   * @param indiceFinalL   O índice final do primeiro subarray.
+   * @param indiceFinalR   O índice final do segundo subarray.
    */
-  void merge(int arr[], int p, int q, int r) {
+  void merge(int vetor[], int indiceInicialL, int indiceFinalL, int indiceFinalR) {
 
       // --- 1. Preparação ---
 
       // Calcula o tamanho do primeiro subarray (arr[p..q])
-      int n1 = q - p + 1;
+      int vetorLTamanho = indiceFinalL - indiceInicialL + 1;
       // Calcula o tamanho do segundo subarray (arr[q+1..r])
-      int n2 = r - q;
+      int vetorRTamanho = indiceFinalR - indiceFinalL;
 
       // Cria arrays temporários para armazenar os elementos dos subarrays
       // Precisamos deles porque vamos sobrescrever arr[p..r] durante a mesclagem
-      int L[] = new int[n1]; // Array temporário para a parte esquerda (Left)
-      int M[] = new int[n2]; // Array temporário para a parte direita (Middle/Right)
+      int L[] = new int[vetorLTamanho]; // Array temporário para a parte esquerda (Left)
+      int M[] = new int[vetorRTamanho]; // Array temporário para a parte direita (Middle/Right)
 
       // Copia os dados dos subarrays originais para os arrays temporários
-      for (int i = 0; i < n1; i++)
-          L[i] = arr[p + i]; // Copia de arr[p] até arr[q] para L[]
-      for (int j = 0; j < n2; j++)
-          M[j] = arr[q + 1 + j]; // Copia de arr[q+1] até arr[r] para M[]
+      for (int i = 0; i < vetorLTamanho; i++)
+          L[i] = vetor[indiceInicialL + i]; // Copia de arr[p] até arr[q] para L[]
+      for (int j = 0; j < vetorRTamanho; j++)
+          M[j] = vetor[indiceFinalL + 1 + j]; // Copia de arr[q+1] até arr[r] para M[]
 
       // --- 2. Mesclagem (Merge) ---
 
@@ -44,22 +44,22 @@ class MergeSort {
       int i, j, k;
       i = 0; // Índice inicial para o subarray L
       j = 0; // Índice inicial para o subarray M
-      k = p; // Índice inicial para o subarray mesclado em arr[p..r]
+      k = indiceInicialL; // Índice inicial para o subarray mesclado em arr[p..r]
 
       // O loop principal de mesclagem:
       // Continua enquanto houver elementos em *ambos* os arrays L e M para comparar.
-      while (i < n1 && j < n2) {
+      while (i < vetorLTamanho && j < vetorRTamanho) {
           // Compara o elemento atual de L com o elemento atual de M
           if (L[i] <= M[j]) {
               // Se o elemento de L for menor ou igual, ele é o próximo na ordem.
               // Coloca L[i] na posição correta (k) do array original arr.
-              arr[k] = L[i];
+              vetor[k] = L[i];
               // Avança para o próximo elemento no array L.
               i++;
           } else {
               // Se o elemento de M for menor, ele é o próximo na ordem.
               // Coloca M[j] na posição correta (k) do array original arr.
-              arr[k] = M[j];
+              vetor[k] = M[j];
               // Avança para o próximo elemento no array M.
               j++;
           }
@@ -73,16 +73,16 @@ class MergeSort {
       // Após o loop principal, um dos arrays temporários (L ou M) pode ter
       // elementos restantes, pois o outro foi totalmente consumido.
       // Copia os elementos restantes de L[], se houver algum.
-      while (i < n1) {
-          arr[k] = L[i];
+      while (i < vetorLTamanho) {
+          vetor[k] = L[i];
           i++;
           k++;
       }
 
       // Copia os elementos restantes de M[], se houver algum.
       // Apenas *um* desses dois loops while (o de cima ou este) será executado.
-      while (j < n2) {
-          arr[k] = M[j];
+      while (j < vetorRTamanho) {
+          vetor[k] = M[j];
           j++;
           k++;
       }
@@ -93,30 +93,30 @@ class MergeSort {
    * Divide o array recursivamente em duas metades, ordena-as e depois as mescla.
    *
    * @param arr O array a ser ordenado.
-   * @param l   O índice inicial (left) do segmento do array a ser considerado.
-   * @param r   O índice final (right) do segmento do array a ser considerado.
+   * @param indiceInicialL   O índice inicial (left) do segmento do array a ser considerado.
+   * @param indiceFinalR   O índice final (right) do segmento do array a ser considerado.
    */
-  void mergeSort(int arr[], int l, int r) {
+  void mergeSort(int vetor[], int indiceInicialL, int indiceFinalR) {
       // Condição de parada da recursão (caso base):
-      // Se l >= r, o segmento tem 0 ou 1 elemento, que já está ordenado por definição.
-      if (l < r) {
+      // Se indiceInicialL >= indiceFinalR, o segmento tem 0 ou 1 elemento, que já está ordenado por definição.
+      if (indiceInicialL < indiceFinalR) {
 
           // --- 1. Dividir ---
           // Encontra o ponto médio para dividir o array em duas metades:
           // Subarray esquerdo: arr[l...m]
           // Subarray direito: arr[m+1...r]
-          int m = (l + r) / 2;
+          int pontoMedio = (indiceInicialL + indiceFinalR) / 2;
 
           // --- 2. Conquistar ---
           // Chama recursivamente mergeSort para ordenar a primeira metade.
-          mergeSort(arr, l, m);
+          mergeSort(vetor, indiceInicialL, pontoMedio);
           // Chama recursivamente mergeSort para ordenar a segunda metade.
-          mergeSort(arr, m + 1, r);
+          mergeSort(vetor, pontoMedio + 1, indiceFinalR);
 
           // --- 3. Combinar ---
           // Quando as duas metades [l..m] e [m+1..r] estiverem ordenadas
           // (devido ao retorno das chamadas recursivas), mescla-as.
-          merge(arr, l, m, r);
+          merge(vetor, indiceInicialL, pontoMedio, indiceFinalR);
       }
   } // Fim da função mergeSort
 
