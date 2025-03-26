@@ -2,6 +2,8 @@
 
 // Merge sort em Java
 
+import java.util.Random;
+
 class MergeSort {
 
   /**
@@ -129,21 +131,50 @@ class MergeSort {
       System.out.println();
   }
 
+  static int [] randomArray(int [] array){
+
+    Random random = new Random();
+
+    for (int i = 0; i < array.length; i++){
+        array[i] = random.nextInt(0,10001);
+    }
+
+    return array;
+
+  }
+
   // Programa principal (Driver program) para testar o Merge Sort
   public static void main(String args[]) {
-      // Array de exemplo desordenado
-      int arr[] = { 6, 5, 12, 10, 9, 1 };
 
-      System.out.println("Array original:");
-      printArray(arr);
+       // Instanciar um Array
+      int [] arr = new int[100000000];
+      
+      // preencher o vetor com valores inteiros aleatórios entre 0 e 1000
+      arr = randomArray(arr);
+
+      //exibir o array original
+      //System.out.println("Array original:");
+      //printArray(arr);
 
       // Cria um objeto da classe MergeSort
       MergeSort ob = new MergeSort();
       // Chama o método mergeSort para ordenar o array completo
       // Começa do índice 0 até o último índice (arr.length - 1)
+      
+      long start = System.currentTimeMillis();
       ob.mergeSort(arr, 0, arr.length - 1);
+      long elapse = System.currentTimeMillis() - start;
+      
+      System.out.println(elapse);
+      // 100 elementos no vetor - 0 milissegundos
+      // 1000 elementos no vetor - 1 milissegundos
+      // 10000 elementos no vetor -  5 milissegundos
+      // 100000 elementos no vetor - 37 milissegundos
+      // 1000000 - 286 milissegundos
+      // 10000000 - 2201 milissegundos
+      // 100000000 - 14833 milissegundos
 
-      System.out.println("\nArray ordenado:");
-      printArray(arr);
+      //System.out.println("\nArray ordenado:");
+      //printArray(arr);
   }
 }
